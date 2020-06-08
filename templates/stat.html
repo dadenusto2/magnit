@@ -41,14 +41,3 @@
     </table>
 </body>
 </html>
-
-
-
-        <script>
-        function changeOption() {
-            var selection = document.getElementById("selection");
-            var selectedOption = MyForm.region.options[MyForm.region.selectedIndex];
-            selection.textContent = "Вы выбрали: " + selectedOption.text;
-        }
-        MyForm.region.addEventListener("change", changeOption);
-        </script>
