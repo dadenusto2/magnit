@@ -8,14 +8,21 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'pass'
+app.config['MYSQL_PASSWORD'] = 'Gh190900'
 app.config['MYSQL_DB'] = 'MyBD'
+app.run(host="192.168.0.26:PORT5000")
 
 mysql = MySQL(app)
 
 # обработка формы
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/index')
+@app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/comment', methods=['GET', 'POST'])
+def comment():
     # словарь для сообщений об ошибках
     messages = {}
     # словарь для данных из формы
@@ -52,7 +59,7 @@ def index():
         # если есть ошибки(т.е. словарь message НЕ пустой), перенапрявляем на исходную страницу с сообщениями об ошибках
         if len(messages) != 0:
             messages.update({"ok": "Ошибка ввода"})
-            return render_template('index.html', data=messages, post=details)
+            return render_template('comment.html', data=messages, post=details)
         # если ввод верный то остовляем сообщение об удачной отправке
         else:
             # обнуляем массив данных
@@ -63,7 +70,7 @@ def index():
         cur.execute('INSERT INTO anketa(last_name, first_name, ot4estvo, region, city, email, phone_number, message) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (last_name, first_name, ot4estvo, region, city, email, phone, message))
         mysql.connection.commit()
         cur.close()
-    return render_template('index.html', data=messages, post=details)
+    return render_template('comment.html', data=messages, post=details)
 
 # просмотр комментариев
 @app.route('/view', methods=['GET', 'POST'])
@@ -118,7 +125,7 @@ def _get_region():
     cur = mysql.connection.cursor()
     # список регионов
     # если надо увеличить список регионов, достаточно добавить их в таблицу, код менять не надо
-    query ="Select region from region "
+    query ="Select region from regions"
     cur.execute(query)
     data = cur.fetchall()
     mysql.connection.commit()
