@@ -3,8 +3,8 @@ create table anketa(
     last_name varchar(128) not null, 
     first_name varchar(128) not null,
     ot4estvo varchar(128) null, 
-    region varchar(128) not null, 
-    city varchar(128) not null, 
+    region varchar(128) null, 
+    city varchar(128) null, 
     phone_number varchar(12) null,
     email varchar(128) null, 
     message varchar(500) not null,
@@ -19,7 +19,7 @@ create table region(
 
 create table cities(
     city_id int(10) not null auto_increment, 
-    region_id varchar(128) not null,
+    region_id int(10) not null,
     city varchar(128) not null,
     PRIMARY KEY (city_id), 
     FOREIGN KEY (region_id) REFERENCES region (region_id)
