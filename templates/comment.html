@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>comment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--скрипт для получения регионов из таблицы-->
+    <script type="text/javascript" src="{{ url_for('static', filename='sripts/get_region.js') }}"></script>
+    <!--скрипт для получения из таблицы городов из конкретного регона -->
+    <script type="text/javascript" src="{{ url_for('static', filename='sripts/get_city.js') }}"></script>
+    <script>
+        //скрипт для скрытия(показа) города если выбран пустой регион(не пустой регион)
+        $(document).ready(function() {
+          $('#region').change(function() {
+            if ($("#region :selected").val()!="") {
+                //если регион не пустой
+                //показываем "город"
+                $("#city").css("display", "inline-block");
+                $("#label_city").css("display", "inline-block");
+            } else {
+            //если регион пустой
+            //скрываем "город"
+                $("#city").css("display", "none");
+                $("#label_city").css("display", "none");
+            //очищаем "город"
+                $("#city").empty();
+            }
+          });
+        });
+    </script>
+</head>
+<BODY onload="get_region()">
+    <a href = "{{url_for('index')}}">Главное</a>
+    <br>
+    <a href = "{{url_for('view')}}">view</a>
+    <br>
+    <a href = "{{url_for('stat')}}">stat</a>
+    <br>
+    <div id="w">
+        <form method="POST" action="" id="contactform" name="MyForm">
+            <p class="note"><span class="req">*</span> Поля со звездочкой обязательны для заполнения</p>
+            <!-- сообщение об удачной/неудачной отправке-->
+            <h3>{{ data['ok'] }}</h3>
+
+            <!--поле фамилия
+            крассный цвет если ошибка-->
+            {% if not data['last_name'] %}
+                <div class="req">
+            {% else %}
+                <div class="err">
+            {% endif %}
+                <label for="last_name">Фамилия<span class="req">*</span></label>
+                <input type = "text" name = "last_name"  class="txt" tabindex="1" placeholder="Иванов", value="{{ post['last_name'] }}"/><br>
+                <!--если не было введено-->
+                <h3>{{ data['last_name'] }}</h3>
+            </div>
+
+            <!--поле имя
+            крассный цвет если ошибка-->
+            {% if not data['first_name'] %}
+                <div class="req">
+            {% else %}
+                <div class="err">
+            {% endif %}
+                <label for="first_name">Имя<span class="req">*</span></label>
+                <input type = "text" name = "first_name" class="txt" tabindex="2"placeholder="Иван" value="{{ post['first_name'] }}" /><br>
+                <!--если не было введено-->
+                <h3>{{ data['first_name'] }}</h3>
+            </div>
+
+            <!--поле отчество-->
+            <div class="row">
+                <label for="ot4estvo">Отчество</label>
+                <input type = "text" name = "ot4estvo" class="txt" tabindex="3" placeholder="Иванович" value="{{ post['ot4estvo'] }}"/><br>
+            </div>
+
+            <!--поле регион-->
+            <div class="row">
+                <label for='region'>Регион</label>
+                <SELECT name="region" id="region" onChange="get_city()">
+                    <option value=""></option>
+                </SELECT>
+            </div>
+
+             <!--поле город-->
+            <div class="row">
+                <label id="label_city" for='city'>Город</label>
+                <SELECT name="city" id="city">
+                    <option value=""></option>
+            </SELECT>
+
+            <!--поле email
+            крассный цвет если ошибка-->
+            {% if not data['email'] %}
+                <div class="req">
+            {% else %}
+                <div class="err">
+            {% endif %}
+                <label for="email">E-mail</label>
+                <input type="text" id="email" name="email" placeholder="example@mail.com" class="txt" tabindex="6" value="{{ post['email'] }}"><br>
+                <!--если было введено неверно-->
+                <h3>{{ data['email'] }}</h3>
+            </div>
+
+            <!--поле телефон
+            крассный цвет если ошибка-->
+            {% if not data['phone'] %}
+                <div class="req">
+            {% else %}
+                <div class="err">
+            {% endif %}
+                <label for="phone">Телефон</label>
+                <input type="text" id="phone" name="phone" placeholder="(900)1234567" class="txt" tabindex="7" value="{{ post['phone'] }}"><br>
+                <!--если было введено неверно-->
+                <h3>{{ data['phone'] }}</h3>
+            </div>
+
+            <!--поле комментария
+            крассный цвет если ошибка-->
+            {% if not data['message'] %}
+                <div class="req">
+            {% else %}
+                <div class="err">
+            {% endif %}
+                <label for="message">Комментарий<span class="req">*</span></label>
+                <textarea type="text" rows="10" cols="45" name="message" placeholder="Комментарий" class="txt" tabindex="8" value="{{ post['message'] }}"></textarea><br>
+                <!--если не было введено-->
+                <h3>{{ data['message'] }}</h3>
+            </div>
+
+            <!--кнопка отправки данных-->
+            <div class="center">
+                <input type = "submit" id="validate" name="submitbtn" tabindex="8" value="Отправить">
+            </div>
+        </form>
+    </div>
+</BODY>
+</HTML>

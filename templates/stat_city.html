@@ -7,19 +7,27 @@
     <!--Статистика по городам конкретного региона-->
 </head>
 <body>
-<table class="table_blur">
-    <!--вверхняя строка-->
-    <tr>
-        <th>{{region}}</th>
-        <th>Кол-во комментарев</th>
-    </tr>
-    <!--Вывод строк по городам-->
-    {%  for item in data %}
+    <a href = "{{url_for('index')}}">Главное</a>
+    <br>
+    <a href = "{{url_for('comment')}}">comment</a>
+    <br>
+    <a href = "{{url_for('view')}}">view</a>
+    <br>
+    <a href = "{{url_for('stat')}}">stat</a>
+    <br>
+    <table class="table_blur">
+        <!--вверхняя строка-->
         <tr>
-            <td>{{item[0]}}</td>
-            <td>{{item[1]}}</td>
+            <th>{{region}}</th>
+            <th>Кол-во комментарев</th>
         </tr>
-    {% endfor %}
+        <!--Вывод строк по городам-->
+        {%  for item in data %}
+            <tr>
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+            </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
